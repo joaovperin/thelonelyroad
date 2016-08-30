@@ -24,4 +24,8 @@ public abstract class Square {
      */
     public Color3 color;
 
+    public void checkForColisions(){
+        
+    }
+
 }

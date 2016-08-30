@@ -6,8 +6,7 @@
 package br.com.perin.tnj.graphics;
 
 import br.com.perin.tnj.graphics.shapes.Square;
-import br.com.perin.tnj.interfaces.Movable;
-import org.lwjgl.input.Keyboard;
+import br.com.perin.tnj.interfaces.Static;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glColor3f;
@@ -23,58 +22,14 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
  *
  * @author 0199831
  */
-public class Square1 extends Square implements Movable {
+public class Square3 extends Square implements Static {
 
-    //http://www.3dgep.com/introduction-to-opengl/
-
-
-    private static final int INCREMENT_AXIS_TIMES = 5;
-
-    public Square1() {
+    public Square3() {
         size = 100;
-        x = 0;
-        y = 0;
-        z = 0;
-        color = Color3.fromInt(250, 150, 100);
-    }
-
-    /**
-     * Processa as informações do teclado
-     */
-    @Override
-    public void processKeyboard() {
-        //Square's Size
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            y -= INCREMENT_AXIS_TIMES;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            y += INCREMENT_AXIS_TIMES;
-        }
-        //Square's Z
-        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            x -= INCREMENT_AXIS_TIMES;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            x += INCREMENT_AXIS_TIMES;
-        }
-
-        checkForColisions();
-
-    }
-
-    /**
-     * Processa o mouse
-     */
-    @Override
-    public void processMouse() {
-    }
-
-    /**
-     * Printa informações na tela
-     */
-    @Override
-    public void printInfo() {
-
+        x = 50;
+        y = 50;
+        z = 50;
+        color = Color3.fromInt(60, 60, 100);
     }
 
     public void render() {

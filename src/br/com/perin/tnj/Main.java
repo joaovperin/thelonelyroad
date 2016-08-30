@@ -2,12 +2,24 @@ package br.com.perin.tnj;
 
 import br.com.perin.tnj.graphics.Square1;
 import br.com.perin.tnj.graphics.Square2;
+import br.com.perin.tnj.graphics.Square3;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 
 /**
@@ -16,9 +28,8 @@ import static org.lwjgl.util.glu.GLU.gluOrtho2D;
  * @author 0199831
  */
 public class Main {
-    
-    //http://www.3dgep.com/introduction-to-opengl/
 
+    //http://www.3dgep.com/introduction-to-opengl/
     /**
      * Título da janela
      */
@@ -47,6 +58,7 @@ public class Main {
      */
     private Square1 square = new Square1();
     private Square2 square2 = new Square2();
+    private Square3 square3 = new Square3();
 
     /**
      * Construtor principal
@@ -157,7 +169,7 @@ public class Main {
 
         square.render();
         square2.render();
-
+        square3.render();
     }
 
     /**
@@ -212,6 +224,7 @@ public class Main {
     private void update() {
         square.render();
         square2.render();
+        square3.render();
     }
 
 }
