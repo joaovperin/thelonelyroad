@@ -3,6 +3,7 @@ package br.com.perin.tnj;
 import br.com.perin.tnj.graphics.Square1;
 import br.com.perin.tnj.graphics.Square2;
 import br.com.perin.tnj.graphics.Square3;
+import br.com.perin.tnj.interfaces.AbstractStaticEntity;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -19,6 +20,7 @@ import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRectd;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
 
@@ -29,6 +31,7 @@ import static org.lwjgl.util.glu.GLU.gluOrtho2D;
  */
 public class Main {
 
+    //http://wiki.lwjgl.org/wiki/Space_Invaders_Example_Game
     //http://www.3dgep.com/introduction-to-opengl/
     /**
      * Título da janela
@@ -93,10 +96,8 @@ public class Main {
      */
     private static void printInfo() {
         System.out.println("Keys:");
-        System.out.println("down  - Shrink");
-        System.out.println("up    - Grow");
-        System.out.println("left  - Rotate left");
-        System.out.println("right - Rotate right");
+        System.out.println("WASD  -> Move 1");
+        System.out.println("Mouse -> Move 2");
         System.out.println("esc   - Exit");
     }
 
@@ -226,5 +227,20 @@ public class Main {
         square2.render();
         square3.render();
     }
+
+
+    private static class Teste extends AbstractStaticEntity {
+
+        public Teste(double x, double y, double width, double height) {
+            super(x, y, width, height);
+        }
+
+        @Override
+        public void draw() {
+            glRectd(x, y, x + width, y + height);
+        }
+
+    }
+
 
 }

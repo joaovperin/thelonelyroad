@@ -33,3 +33,5 @@ Desktop.ini
 ## Macintosh
 
 .DS_Store
+/nbproject/private/
+/build/

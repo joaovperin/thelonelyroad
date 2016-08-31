@@ -26,10 +26,11 @@
  * of the authors and should not be interpreted as representing official policies,
  * either expressed or implied, of the FreeBSD Project.
  */
-
 package br.com.perin.tnj.interfaces;
 
 public interface MoveableEntity extends Entity {
+
+    public void update(int delta);
 
     public double getDX();
 

@@ -6,7 +6,7 @@
 package br.com.perin.tnj.graphics;
 
 import br.com.perin.tnj.graphics.shapes.Square;
-import br.com.perin.tnj.interfaces.Static;
+import br.com.perin.tnj.interfaces.StaticEntity;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glColor3f;
@@ -22,7 +22,8 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
  *
  * @author 0199831
  */
-public class Square3 extends Square implements Static {
+public class Square3 extends Square {
+//public class Square3 extends Square implements StaticEntity {
 
     public Square3() {
         size = 100;

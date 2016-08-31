@@ -33,9 +33,6 @@ public interface Entity {
 
     public void draw();
 
-    // See episode 7
-    public void update(int delta);
-
     public void setLocation(double x, double y);
 
     public void setX(double x);

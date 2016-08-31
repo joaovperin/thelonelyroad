@@ -7,6 +7,6 @@ package br.com.perin.tnj.interfaces;
 /**
  * Interface para objetos estáticos
  */
-public interface Static {
+public interface StaticEntity extends Entity {
 
 }
