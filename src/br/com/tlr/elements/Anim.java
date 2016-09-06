@@ -11,25 +11,34 @@ package br.com.tlr.elements;
  */
 public class Anim {
 
-    private int x;
-    private final int offset;
+    /** Coluna atual da animação */
+    private int col;
+    /** Linha na folha de sprites */
+    private final int row;
 
-    public Anim(int offset) {
-        this.offset = offset;
+    /** Número de colunas na folha de sprites */
+    public static final int NUM_COL = 4;
+
+    /**
+     * Construtor padrão da classe
+     *
+     * @param row
+     */
+    public Anim(int row) {
+        this.row = row;
     }
 
+    /**
+     * Pega a próxima coluna na linha selecionada
+     *
+     * @return int
+     */
     public int next() {
-        if (++x >= 4) {
-            x = 0;
+        if (++col >= NUM_COL) {
+            col = 0;
         }
-        return x + (offset) * 4;
+        return col + (row * NUM_COL);
     }
-
-    public enum DIR {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT;
-    }
+    
 
 }

@@ -33,7 +33,7 @@ public class TheLonelyRoad extends BasicGame {
     private static final int SCREEN_HEIGHT = 890;
 
     private Player me;
-    
+
     int BATATA = 0;
 
     /**
@@ -46,21 +46,13 @@ public class TheLonelyRoad extends BasicGame {
     Image[] movementTest = new Image[3];
     int[] duration = {200, 200, 200};
 
-    /**
-     * Animaçoes
-     */
+    /**  Animaçoes */
     private Animation sprite, up, down, left, right;
-    /**
-     * Coordenadas
-     */
+
+    /** Coordenadas */
     private float x = 600f, y = 600f;
-    SpriteSheet sheet;
 
-    private Player player;
-
-    /**
-     * Mapa principal do jogo -> Grama
-     */
+    /**  Mapa principal do jogo -> Grama */
     private TiledMap grassMap;
 
     /**
@@ -77,7 +69,7 @@ public class TheLonelyRoad extends BasicGame {
      */
     public static void main(String[] arguments) {
         try {
-            System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "true"); // Adicionado apenas pq os PC da Feevale são LIXO.
+//            System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "true"); // Adicionado apenas pq os PC da Feevale são LIXO.
             AppGameContainer app = new AppGameContainer(new TheLonelyRoad());
             app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, false);
             app.start();
@@ -98,8 +90,8 @@ public class TheLonelyRoad extends BasicGame {
         // Carrega o mapa em memória
         grassMap = new TiledMap("data/maps/desert.tmx");
 
-        me = new Player("player.png", new int[]{300, 300, 300, 300}, new float[]{grassMap.getWidth()
-            * 32.0f, grassMap.getHeight() * 28.7f});
+        // Instancia o jogador
+        me = new Player("player.png", 4);
 
         /**
          * TODO: SEPARAR TODOS OS SPRITES EM UM ÚNICO ARQUIVO E TESTAR CLASSE
@@ -187,7 +179,8 @@ public class TheLonelyRoad extends BasicGame {
             x += delta * 0.1f;
         }
 
-        me.processKeyboard(delta, grassMap.getWidth() * 32.0f, grassMap.getHeight() * 28.7f);
+        // Processa o teclado
+        me.processKeyboard(container.getInput(), delta, grassMap.getWidth() * 32.0f, grassMap.getHeight() * 28.7f);
 
     }
 
