@@ -5,15 +5,25 @@
  */
 package br.com.tlr.elements;
 
+import org.newdawn.slick.Animation;
+
 /**
+ * Classe responsável pela criação de characters
  *
  * @author JOAO
  */
-public abstract class Character {
+public abstract class Character extends Movable implements Animable {
 
-    /** Diretório dos Sprites */
-    public static final String SPRITES_DIR = "data/sprites/sheets/";
+    /** Animação atual do character */
+    protected Animation character;
 
-    public abstract void load();
+    /** Tiro disparado pelo character */
+    protected Shot tiro;
+
+    // Animações default   (SUBSTITUIR POR ARRAYLIST)
+    protected Animation up;
+    protected Animation down;
+    protected Animation left;
+    protected Animation right;
 
 }

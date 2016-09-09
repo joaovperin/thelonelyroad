@@ -5,9 +5,10 @@
  */
 package br.com.tlr.elements;
 
-import static br.com.tlr.elements.Anim.NUM_COL;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -18,125 +19,115 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class Player extends Character {
 
-    // http://slick.ninjacave.com/forum/viewtopic.php?t=619  TECLADO SLICK2D
     /** Nome da animaçao */
-    protected final String animationName;
-    /** Folha de sprites */
-    protected SpriteSheet sheet;
-    /** Duração de cada animação */
-    protected final int[] duration;
+    private final String animationName;
     /** Número de frames por sprite */
-    protected final int numFrames;
+    private final int numFrames;
 
-    /** Animação atual do player */
-    protected Animation player;
-    /** Número do sprite atual */
-    private int sprite;
-    /** Posição atual do sprite - X e Y */
-    private float x = 0f, y = 0f;
+    /** Duração de cada animação */
+    private final int duration;
+    private int dirFacing;
 
-    // Array de animações (testar)
-    private Animacoes animacoes;
-
-    // Animações default        TODO: Transformar num Array de animações
-    private final Anim up = new Anim(0);
-    private final Anim down = new Anim(1);
-    private final Anim left = new Anim(2);
-    private final Anim right = new Anim(3);
+    /** Tempo total da animação */
+    private static final int TEMPO_ANIMACAO = 800;
+    /** Quadro máximo que os players podem se mover */
+    private final float[][] movableArea;   // TODO: Transformar em um array com quatro pontos, recebendo as mínimas também
 
     /**
      * Construtor padrão de um Player
      *
-     * @param animationName
+     * @param animationName Nome do arquivo de animações do jogador
      * @param numFrames Número de frames por sprite
+     * @param movableArea Dimensões máximas do jogador
      */
-    public Player(String animationName, int numFrames) {
+    public Player(String animationName, int numFrames, float[][] movableArea) {
         this.animationName = animationName;
         this.numFrames = numFrames;
         this.duration = createDuration();
-        this.sprite = 1;
-        this.player = new Animation();
-    }
-
-    /**
-     * Cria um Array de duração das animações
-     *
-     * @return int[]
-     */
-    private int[] createDuration() {
-        // TODO: Implementar criação de Array duração baseado no número de frames
-        // Usar: this.numFrames
-        return new int[] { 1000, 1000, 1000, 1000 };
+        tiro = new Shot("player.png", 300);
+        this.movableArea = movableArea;
     }
 
     /**
      * Carrega as imagens e as animações
+     *
+     * @param container Container do jogo
+     * @throws SlickException Problema no carregamento dos objetos na API
      */
     @Override
-    public void load() {
+    public void load(GameContainer container) throws SlickException {
         try {
             // Carrega sprites para as animações de movimentos
-            sheet = new SpriteSheet(SPRITES_DIR + animationName, 32, 48);
-//            player = new Animation(sheet, 200); //Testar
-            player.setAutoUpdate(true);
-            // Carrega frames na animação do player
-            for (int lin = 0; lin < NUM_COL; lin++) {
-                for (int col = 0; col < duration.length; col++) {
-                    player.addFrame(sheet.getSprite(col, lin), duration[col]);
-                }
-            }
-            // Instancia Array de animações
-            animacoes = new Animacoes(numFrames);
+            SpriteSheet sheet = new SpriteSheet(SPRITES_DIR + animationName, 32, 48);
+
+            // Carrega frames de animação do character da spritesheet
+            up = new Animation(sheet, 0, 0, 3, 0, true, duration, true);
+            down = new Animation(sheet, 0, 1, 3, 1, true, duration, true);
+            left = new Animation(sheet, 0, 2, 3, 2, true, duration, true);
+            right = new Animation(sheet, 0, 3, 3, 3, true, duration, true);
+            // Carrega os ataques
+            tiro.load(container);
+            // Inicializa o character movendo virado para a direita
+            character = right;
+            character.setAutoUpdate(false);
         } catch (SlickException e) {
             System.out.println("Ex: " + e);
         }
     }
 
     /**
-     * Processa o teclado
-     * TODO: Parar de receber maxX e maxY aqui e receber no construtor como "private final float[] max;"
+     * Atualiza os frames do jogo
      *
-     * @param input Entradas do jogo
-     * @param delta
-     * @param maxX Dimensões máximas -> X
-     * @param maxY Dimensões máximas -> Y
+     * @param container Container do jogo
+     * @param delta Tempo de atualização
+     * @throws SlickException Problema ao atualizar quadros
      */
-    public void processKeyboard(Input input, int delta, float maxX, float maxY) {
+    @Override
+    public void update(GameContainer container, int delta) throws SlickException {
+        // http://slick.ninjacave.com/forum/viewtopic.php?t=619  TECLADO SLICK2D
+        // Entradas do jogo
+        Input input = container.getInput();
+        // Para a execução da animação
+        character.setAutoUpdate(false);
         // Ação TIRO
         if (input.isKeyPressed(Keyboard.KEY_SPACE)) {
             shoot(delta);
         }
-        // Ações de movimentação
+        tiro.update(container, delta);
+        // Ações de movimentação - UP
         if (input.isKeyDown(Keyboard.KEY_I)) {
-            if (getY() <= 0) {
+            if (getY() <= movableArea[0][0]) {
                 return;
             }
-            setSprite(up.next());
-            update(delta);
+            dirFacing = 0;
+            update(delta, up);
             subY(delta * 0.1f);
         }
+        // Ações de movimentação - DOWN
         if (input.isKeyDown(Keyboard.KEY_K)) {
-            if (getY() >= maxY) {
+            if (getY() >= movableArea[1][1]) {
                 return;
             }
-            setSprite(down.next());
-            update(delta);
+            dirFacing = 1;
+            update(delta, down);
             addY(delta * 0.1f);
         }
+        // Ações de movimentação - LEFT
         if (input.isKeyDown(Keyboard.KEY_J)) {
-            if (getX() <= 0) {
+            if (getX() <= movableArea[0][0]) {
                 return;
             }
-            setSprite(left.next());
-            update(delta);
+            dirFacing = 2;
+            update(delta, left);
             subX(delta * 0.1f);
         }
+        // Ações de movimentação - RIGHT
         if (input.isKeyDown(Keyboard.KEY_L)) {
-            if (getX() >= maxX) {
+            if (getX() >= movableArea[0][1]) {
                 return;
             }
-            setSprite(right.next());
-            update(delta);
+            dirFacing = 3;
+            update(delta, right);
             addX(delta * 0.1f);
         }
     }
@@ -147,66 +138,46 @@ public class Player extends Character {
      * @param delta
      */
     public void shoot(int delta) {
-        System.out.println("Tiro");
+        tiro.shoot(delta, getX(), getY());
     }
 
     /**
-     * Renderiza o jogador nas coordenadas
+     * Renderiza as imagens do jogo
+     *
+     * @param container Container do jogo
+     * @param g Contexto gráfico usado para renderizar o canvas
+     * @throws SlickException Problema na renderização de imagens na API
      */
-    public void render() {
-        player.setCurrentFrame(sprite);
-        player.draw(x, y);
+    @Override
+    public void render(GameContainer container, Graphics g) throws SlickException {
+        character.draw(getX(), getY());
+        tiro.updateInternal(container.getFPS(), dirFacing);
+        tiro.render(container, g);
+    }
+
+    /** *********************************************************************************************
+     * PRIVATE METHODS! *
+     *********************************************************************************************** */
+    /**
+     * Cria duração das animações baseado no número de frames
+     *
+     * @return int
+     */
+    private int createDuration() {
+        return TEMPO_ANIMACAO / numFrames;
     }
 
     /**
-     * Atualização do player na tela
+     * Atualização do character na tela
      *
      * @param delta
+     * @param animation Animação atual do character
      */
-    public void update(int delta) {
-        player.update(delta);
-    }
-
-    /**
-     *
-     * GET / SETS
-     *
-     * @param x
-     */
-    public void addX(float x) {
-        this.x += x;
-    }
-
-    public void addY(float y) {
-        this.y += y;
-    }
-
-    public void subX(float x) {
-        this.x -= x;
-    }
-
-    public void subY(float y) {
-        this.y -= y;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setSprite(int sprite) {
-        this.sprite = sprite;
+    private void update(int delta, Animation animation) {
+        character = animation;
+        character.setAutoUpdate(true);
+        tiro.updateInternal(delta, dirFacing);
+        character.update(delta);
     }
 
 }
