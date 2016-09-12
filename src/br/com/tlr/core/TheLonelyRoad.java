@@ -40,8 +40,8 @@ public class TheLonelyRoad extends BasicGame {
         grassMap = new TiledMap("data/maps/desert.tmx");
         // Área movível do jogador
         float[][] movableArea = {
-            { 0, 0 }, // X axis
-            { grassMap.getWidth() * 32.0f, grassMap.getHeight() * 28.7f } // Y axis
+            {0, grassMap.getWidth() * 32.0f}, // X axis
+            {0, grassMap.getHeight() * 28.7f} // Y axis
         };
         // Instancia o jogador
         player = new Player("player.png", 4, movableArea);

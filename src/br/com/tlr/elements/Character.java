@@ -5,6 +5,9 @@
  */
 package br.com.tlr.elements;
 
+import br.com.tlr.encapsulation.Animacoes;
+import br.com.tlr.forbidden.Animacao;
+import java.util.ArrayList;
 import org.newdawn.slick.Animation;
 
 /**
@@ -20,6 +23,9 @@ public abstract class Character extends Movable implements Animable {
     /** Tiro disparado pelo character */
     protected Shot tiro;
 
+    // Array de animações (TORNAR FINAL)
+    protected Animacoes animacoes;
+    
     // Animações default   (SUBSTITUIR POR ARRAYLIST)
     protected Animation up;
     protected Animation down;

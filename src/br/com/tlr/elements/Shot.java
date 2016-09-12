@@ -5,7 +5,7 @@
  */
 package br.com.tlr.elements;
 
-import static br.com.tlr.elements.Movable.SPRITES_DIR;
+import static br.com.tlr.factory.AnimationFactory.SPRITES_DIR;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -25,11 +25,12 @@ public class Shot extends Attack {
     /** Tiro */
     private Animation tiro;
 
-    /**
-     * Contador de tempo do tiro
-     */
+    /** Contador de tempo do tiro */
     private int counter;
+    /** Se está vivo o bagulho */
     private boolean isAlive;
+    /** Direção de movimentação */
+    private int dir;
 
     /**
      * Construtor da classe que recebe o lifespan
@@ -53,11 +54,10 @@ public class Shot extends Attack {
     @Override
     public void load(GameContainer container) throws SlickException {
         // Carrega sprites para as animações de movimentos
-        SpriteSheet sheet = new SpriteSheet(SPRITES_DIR + animationName, 32, 48);
+        SpriteSheet sheet = new SpriteSheet(SPRITES_DIR + animationName, 25, 30);
         // Carrega frames de animação do character da spritesheet
-        tiro = new Animation(sheet, 0, 0, 3, 0, true, 300, true);
+        tiro = new Animation(sheet, 0, 0, 6, 0, true, 100, true);
     }
-
 
     /**
      * Atualiza os frames do jogo
@@ -68,6 +68,28 @@ public class Shot extends Attack {
      */
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
+        int fps = container.getFPS();
+        if (isAlive) {
+            // Verifica se deve encerrar
+            if (counterInc(fps) >= lifeSpan) {
+                die();
+            }
+            // Move
+            switch (dir) {
+                case 0:
+                    subY(movInc(fps));
+                    break;
+                case 1:
+                    addY(movInc(fps));
+                    break;
+                case 2:
+                    subX(movInc(fps));
+                    break;
+                case 3:
+                    addX(movInc(fps));
+                    break;
+            }
+        }
     }
 
     /**
@@ -79,60 +101,37 @@ public class Shot extends Attack {
      */
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
+        if (isAlive) {
+            tiro.draw(getX(), getY());
+        }
     }
 
-
-
-
-    
     /**
      * Ação de tiro -> A IMPLEMENTAR
      *
      * @param delta
      */
-    public void shoot(int delta, float x, float y) {
+    public void shoot(int delta, float x, float y, int dir) {
+        System.out.println("Tiro");
         isAlive = true;
         setX(x);
         setY(y);
-        System.out.println("Tiro");
+        this.dir = dir;
+        counter = 0;
     }
 
-    /**
-     * Ação de tiro -> A IMPLEMENTAR
-     *
-     * @param delta
-     */
-    public void updateInternal(int fps, int dir) {
-        if (isAlive) {
-            System.out.println("Delta: " + counter + "  LifeSpan: " + lifeSpan);
-//            tiro.draw(getX(), getY());
+    private int counterInc(int fps) {
+        counter += (int) 100 / (fps + 1);
+        return counter;
+    }
 
-            switch (dir) {
-                case 0:
-                    subY(fps * 0.001f);
-                    break;
-                case 1:
-                    addY(fps * 0.001f);
-                    break;
-                case 2:
-                    subX(fps * 0.001f);
-                    break;
-                case 3:
-                    addX(fps * 0.001f);
-                    break;
-            }
-            tiro.draw(getX(), getY());
-            if (++counter >= lifeSpan) {
-                die();
-            }
-        }
-
+    private float movInc(int fps) {
+        return 0.1f * 1000 / (fps + 1);
     }
 
     private void die() {
         counter = 0;
         isAlive = false;
-        System.out.println("Morto");
     }
 
 }

@@ -5,6 +5,9 @@
  */
 package br.com.tlr.elements;
 
+import br.com.tlr.encapsulation.AnimationEnum;
+import br.com.tlr.factory.AnimationFactory;
+import static br.com.tlr.factory.AnimationFactory.SPRITES_DIR;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -28,10 +31,8 @@ public class Player extends Character {
     private final int duration;
     private int dirFacing;
 
-    /** Tempo total da animação */
-    private static final int TEMPO_ANIMACAO = 800;
     /** Quadro máximo que os players podem se mover */
-    private final float[][] movableArea;   // TODO: Transformar em um array com quatro pontos, recebendo as mínimas também
+    private final float[][] movableArea;
 
     /**
      * Construtor padrão de um Player
@@ -43,8 +44,8 @@ public class Player extends Character {
     public Player(String animationName, int numFrames, float[][] movableArea) {
         this.animationName = animationName;
         this.numFrames = numFrames;
-        this.duration = createDuration();
-        tiro = new Shot("player.png", 300);
+        this.duration = 200;
+        tiro = new Shot("atk.png", 300);
         this.movableArea = movableArea;
     }
 
@@ -59,6 +60,9 @@ public class Player extends Character {
         try {
             // Carrega sprites para as animações de movimentos
             SpriteSheet sheet = new SpriteSheet(SPRITES_DIR + animationName, 32, 48);
+
+            // Cria animações
+            animacoes = AnimationFactory.create(animationName, 4, AnimationEnum.getAll());
 
             // Carrega frames de animação do character da spritesheet
             up = new Animation(sheet, 0, 0, 3, 0, true, duration, true);
@@ -96,7 +100,7 @@ public class Player extends Character {
         tiro.update(container, delta);
         // Ações de movimentação - UP
         if (input.isKeyDown(Keyboard.KEY_I)) {
-            if (getY() <= movableArea[0][0]) {
+            if (getY() <= movableArea[1][0]) {
                 return;
             }
             dirFacing = 0;
@@ -130,6 +134,7 @@ public class Player extends Character {
             update(delta, right);
             addX(delta * 0.1f);
         }
+        tiro.update(container, delta);
     }
 
     /**
@@ -137,8 +142,8 @@ public class Player extends Character {
      *
      * @param delta
      */
-    public void shoot(int delta) {
-        tiro.shoot(delta, getX(), getY());
+    private void shoot(int delta) {
+        tiro.shoot(delta, getX(), getY(), dirFacing);
     }
 
     /**
@@ -151,22 +156,12 @@ public class Player extends Character {
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
         character.draw(getX(), getY());
-        tiro.updateInternal(container.getFPS(), dirFacing);
         tiro.render(container, g);
     }
 
     /** *********************************************************************************************
      * PRIVATE METHODS! *
-     *********************************************************************************************** */
-    /**
-     * Cria duração das animações baseado no número de frames
-     *
-     * @return int
-     */
-    private int createDuration() {
-        return TEMPO_ANIMACAO / numFrames;
-    }
-
+     * ********************************************************************************************** */
     /**
      * Atualização do character na tela
      *
@@ -176,7 +171,6 @@ public class Player extends Character {
     private void update(int delta, Animation animation) {
         character = animation;
         character.setAutoUpdate(true);
-        tiro.updateInternal(delta, dirFacing);
         character.update(delta);
     }
 

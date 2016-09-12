@@ -12,8 +12,6 @@ package br.com.tlr.elements;
  */
 public abstract class Movable {
     
-    /** Diretório dos Sprites */
-    public static final String SPRITES_DIR = "data/sprites/sheets/";
     /** Posição atual do objeto - X e Y */
     private float x = 0f, y = 0f;
     
