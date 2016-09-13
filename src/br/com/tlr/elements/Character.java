@@ -6,30 +6,35 @@
 package br.com.tlr.elements;
 
 import br.com.tlr.encapsulation.Animacoes;
-import br.com.tlr.forbidden.Animacao;
-import java.util.ArrayList;
-import org.newdawn.slick.Animation;
 
 /**
- * Classe responsável pela criação de characters
+ * Classe responsável pela criação de personagens
  *
  * @author JOAO
  */
 public abstract class Character extends Movable implements Animable {
 
-    /** Animação atual do character */
-    protected Animation character;
+    /** Nome da animaçao */
+    protected final String animationName;
+    /** Quadro máximo que os players podem se mover */
+    protected final float[][] movableArea;
+    /** Número de quadros por animação do personagem */
+    protected final int numFrames;
 
-    /** Tiro disparado pelo character */
-    protected Shot tiro;
-
-    // Array de animações (TORNAR FINAL)
+    // Array de animações (Reestruturar para ser possível de tornar FINAL)
     protected Animacoes animacoes;
-    
-    // Animações default   (SUBSTITUIR POR ARRAYLIST)
-    protected Animation up;
-    protected Animation down;
-    protected Animation left;
-    protected Animation right;
+
+    /**
+     * Construtor padrão de um Character
+     *
+     * @param animationName Nome do arquivo de animações do personagem
+     * @param numFrames Número de frames por sprite
+     * @param movableArea Dimensões máximas do jogador
+     */
+    public Character(String animationName, int numFrames, float[][] movableArea) {
+        this.animationName = animationName;
+        this.numFrames = numFrames;
+        this.movableArea = movableArea;
+    }
 
 }

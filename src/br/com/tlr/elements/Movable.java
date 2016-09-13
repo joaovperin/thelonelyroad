@@ -7,17 +7,17 @@ package br.com.tlr.elements;
 
 /**
  * * Classe abstrata para todos os itens que podem se mover
- * 
+ *
  * @author 0199831
  */
 public abstract class Movable {
-    
+
     /** Posição atual do objeto - X e Y */
     private float x = 0f, y = 0f;
-    
+
     /**
      * Incrementa a posição no eixo X
-     * 
+     *
      * @param x Valor a Incrementar na posição
      */
     protected void addX(float x) {
@@ -26,16 +26,16 @@ public abstract class Movable {
 
     /**
      * Incrementa a posição no eixo X
-     * 
+     *
      * @param y Valor a incrementar na posição
      */
     protected void addY(float y) {
         this.y += y;
     }
-    
+
     /**
      * Decrementa a posição no eixo X
-     * 
+     *
      * @param x Valor a decrementar da posição
      */
     public void subX(float x) {
@@ -44,7 +44,7 @@ public abstract class Movable {
 
     /**
      * Decrementa a posição no eixo Y
-     * 
+     *
      * @param y Valor a decrementar da posição
      */
     public void subY(float y) {
@@ -53,7 +53,7 @@ public abstract class Movable {
 
     /**
      * Retorna a posição atual no eixo X
-     * 
+     *
      * @return float
      */
     public float getX() {
@@ -62,26 +62,29 @@ public abstract class Movable {
 
     /**
      * Retorna a posição atual no eixo Y
-     * 
+     *
      * @return float
      */
     public float getY() {
         return y;
     }
 
-    
     /**
-     * COMENTAR ---
-    */
-    
+     * Define o valor da posição no eixo X
+     *
+     * @param x Valor a definir para a posição
+     */
     public void setX(float x) {
         this.x = x;
     }
 
+    /**
+     * Define o valor da posição no eixo Y
+     *
+     * @param y Valor a definir para a posição
+     */
     public void setY(float y) {
         this.y = y;
     }
-    
-    
-    
+
 }

@@ -54,7 +54,7 @@ public class Shot extends Attack {
     @Override
     public void load(GameContainer container) throws SlickException {
         // Carrega sprites para as animações de movimentos
-        SpriteSheet sheet = new SpriteSheet(SPRITES_DIR + animationName, 25, 30);
+        SpriteSheet sheet = new SpriteSheet(SPRITES_DIR + animationName, 32, 24);
         // Carrega frames de animação do character da spritesheet
         tiro = new Animation(sheet, 0, 0, 6, 0, true, 100, true);
     }

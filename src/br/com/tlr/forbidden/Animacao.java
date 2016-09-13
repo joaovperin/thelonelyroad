@@ -28,10 +28,12 @@ public class Animacao implements Animable {
     private final SpriteSheet sheet;
     /** Último quadrado no eixo X */
     private final int lastX;
-    
+
     /** Animação do Slick2D */
     private Animation animation;
-    
+    private float x;
+    private float y;
+
     /** Tempo total da animação */
     private static final int TEMPO_ANIMACAO = 800;
 
@@ -48,7 +50,7 @@ public class Animacao implements Animable {
         this.lastX = numFrames - 1;
         this.sheet = sheet;
     }
-    
+
     /**
      * Carrega as imagens e as animações
      *
@@ -59,7 +61,7 @@ public class Animacao implements Animable {
     public void load(GameContainer container) throws SlickException {
         this.animation = new Animation(sheet, 0, code, lastX, code, true, createDuration(), true);
     }
-    
+
     /**
      * Cria duração das animações baseado no número de frames
      *
@@ -88,6 +90,17 @@ public class Animacao implements Animable {
     }
 
     /**
+     * Move a animação para as coordenadas indicas
+     *
+     * @param x
+     * @param y
+     */
+    public void move(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
      * Retorna a animação do Slick2D
      *
      * @return Animation
@@ -95,15 +108,15 @@ public class Animacao implements Animable {
     public Animation getAnimation() {
         return animation;
     }
-    
+
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
         animation.update(delta);
     }
-    
+
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-        
+        animation.draw(x, y);
     }
 
 }

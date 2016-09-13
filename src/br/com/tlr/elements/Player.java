@@ -17,6 +17,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 /**
+ * PLAYER - primeira versão estrutural
  *
  * @author JOAO
  */
@@ -34,6 +35,18 @@ public class Player extends Character {
     /** Quadro máximo que os players podem se mover */
     private final float[][] movableArea;
 
+    /** Animação atual do character */
+    protected Animation character;
+
+    /** Tiro disparado pelo character */
+    protected Shot tiro;
+
+    // Animações default   (SUBSTITUIR POR ARRAYLIST)
+    protected Animation up;
+    protected Animation down;
+    protected Animation left;
+    protected Animation right;
+
     /**
      * Construtor padrão de um Player
      *
@@ -42,6 +55,7 @@ public class Player extends Character {
      * @param movableArea Dimensões máximas do jogador
      */
     public Player(String animationName, int numFrames, float[][] movableArea) {
+        super(animationName, numFrames, movableArea);
         this.animationName = animationName;
         this.numFrames = numFrames;
         this.duration = 200;
@@ -63,6 +77,7 @@ public class Player extends Character {
 
             // Cria animações
             animacoes = AnimationFactory.create(animationName, 4, AnimationEnum.getAll());
+            animacoes.load(container);
 
             // Carrega frames de animação do character da spritesheet
             up = new Animation(sheet, 0, 0, 3, 0, true, duration, true);

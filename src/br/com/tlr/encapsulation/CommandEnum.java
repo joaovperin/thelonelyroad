@@ -10,9 +10,9 @@ package br.com.tlr.encapsulation;
  *
  * @author 0199831
  */
-public enum AnimationEnum {
+public enum CommandEnum {
 
-    UP(0), DOWN(1), LEFT(2), RIGHT(3);
+    RUN(0), ATTACK(1);
 
     /** Código da animação */
     private final short code;
@@ -22,7 +22,7 @@ public enum AnimationEnum {
      *
      * @param code Código da animação
      */
-    AnimationEnum(int code) {
+    CommandEnum(int code) {
         this.code = (short) code;
     }
 
@@ -41,7 +41,7 @@ public enum AnimationEnum {
      * @return String
      */
     public String getName() {
-        return AnimationEnum.class.getEnumConstants()[code].toString();
+        return CommandEnum.class.getEnumConstants()[code].toString();
     }
 
     /**
@@ -49,8 +49,8 @@ public enum AnimationEnum {
      *
      * @return AnimationEnum[]
      */
-    public static AnimationEnum[] getAll() {
-        return AnimationEnum.values();
+    public static CommandEnum[] getAll() {
+        return CommandEnum.values();
     }
 
 }

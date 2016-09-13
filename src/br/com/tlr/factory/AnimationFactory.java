@@ -9,10 +9,11 @@ import br.com.tlr.encapsulation.Animacoes;
 import br.com.tlr.forbidden.Animacao;
 import br.com.tlr.encapsulation.AnimationEnum;
 import java.util.ArrayList;
+import java.util.List;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-/**
+/**d
  *
  * @author 0199831
  */
@@ -33,10 +34,10 @@ public class AnimationFactory extends AbstractFactory {
     public static Animacoes create(String name, int num, AnimationEnum... args) throws SlickException {
         // Carrega sprites para as animações de movimentos
         SpriteSheet sheet = new SpriteSheet(SPRITES_DIR + name, 32, 48);
-        ArrayList<Animacao> list = new ArrayList<>();
+        List<Animacao> list = new ArrayList<>();
         // Percorre argumentos criando animações
         for (AnimationEnum arg : args) {
-            list.add(new Animacao(AnimationEnum.UP, num, sheet));
+            list.add(new Animacao(arg, num, sheet));
         }
         // Retorna lista criada
         return new Animacoes(list);
